@@ -1,18 +1,19 @@
 #!./venv/bin/python
 
-from file_utils import read_csv, parse 
+import matplotlib.pyplot as plt
+
+from utils import read_csv, parse_path_feature_2
 
 
-# TODO: implement
-# TODO: code color by house
-def pair_plot(df):
+# TODO: implement, use histogram() and scatter_plot()
+def pair_plot():
     pass
 
 
 def main():
-    args = parse()
+    args = parse_path_feature_2()
     df = read_csv(args.path)
-    pair_plot(df)
+    pair_plot(df, args.feature_x, args.feature_y)
 
 
 if __name__ == "__main__":

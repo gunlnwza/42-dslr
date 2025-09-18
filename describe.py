@@ -1,6 +1,6 @@
 #!./venv/bin/python
 
-from file_utils import read_csv, parse 
+from utils import read_csv, parse_path 
 
 
 # TODO: implement describe myself
@@ -9,7 +9,7 @@ def describe(df):
 
 
 def main():
-    args = parse()
+    args = parse_path()
     df = read_csv(args.path)
     describe(df)
 
