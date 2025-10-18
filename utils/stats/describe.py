@@ -5,7 +5,7 @@ from rich.text import Text
 from rich.table import Table
 from rich.console import Console
 
-from utils.stats import aggregration as agg
+from utils.stats import aggregation as agg
 
 def describe(df: pd.DataFrame) -> pd.DataFrame:
 
