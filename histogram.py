@@ -1,5 +1,8 @@
 #!./venv/bin/python
 
+import argparse
+import sys
+
 import matplotlib.pyplot as plt
 
 from utils import read_csv, parse_path_feature 
@@ -23,10 +26,29 @@ def histogram(df, feature: str):
     plt.show()
 
 
-def main():
-    args = parse_path_feature()
-    if args.h:
-        print("Arithmancy\nAstronomy\nHerbology\nDefense Against the Dark Arts\nDivination\nMuggle Studies\nAncient Runes\nHistory of Magic\nTransfiguration\nPotions\nCare of Magical Creatures\nCharms\nFlying")
+def get_description():
+    COLUMN_NAMES = [
+        "Arithmancy", "Astronomy", "Herbology", "Defense Against the Dark Arts", "Divination",
+        "Muggle Studies", "Ancient Runes", "History of Magic", "Transfiguration", "Potions",
+        "Care of Magical Creatures", "Charms", "Flying"
+    ]
+    
+    des = "Plot a histogram for the selected columns:\n"
+    for c in COLUMN_NAMES:
+        des += f"  {c}\n"
+    return des
+
+
+def main():    
+    parser = argparse.ArgumentParser(
+        prog="histogram.py",
+        description=get_description(),
+        formatter_class=argparse.RawDescriptionHelpFormatter
+    )
+    parser.add_argument("path", help=".csv file to describe")
+    parser.add_argument("feature", help="feature name to plot")
+    args = parser.parse_args()
+
     df = read_csv(args.path)
     histogram(df, args.feature)
 
