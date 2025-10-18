@@ -33,7 +33,7 @@ def get_description():
         "Care of Magical Creatures", "Charms", "Flying"
     ]
     
-    des = "Plot a histogram for the selected columns:\n"
+    des = "Draw a histogram for the selected column:\n"
     for c in COLUMN_NAMES:
         des += f"  {c}\n"
     return des
@@ -46,7 +46,7 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
     parser.add_argument("path", help=".csv file to describe")
-    parser.add_argument("feature", help="feature name to plot")
+    parser.add_argument("feature", help="feature's name to plot")
     args = parser.parse_args()
 
     df = read_csv(args.path)
