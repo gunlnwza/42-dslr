@@ -1,17 +1,29 @@
 #!./venv/bin/python
 
-from utils import read_csv, parse_path 
-from utils.stats.describe import display_stats, describe
+import argparse
+import sys
+
+import pandas as pd
+
+from utils.stats.describe import ft_describe, display_stats
+
 
 def main():
-    
-    args = parse_path()
-    
-    df = read_csv(args.path)
-    print(describe(df))
+    parser = argparse.ArgumentParser("describe.py", description="describe of statistics of numerical columns")
+    parser.add_argument("-p", "--pretty", action="store_true", help="pretty print table")
+    parser.add_argument("path", help=".csv file to describe")
+    args = parser.parse_args()
 
-    # for rich table display
-    # display_stats(df)
+    try:
+        df = pd.read_csv(args.path, index_col="Index")
+    except Exception as e:
+        print(e)
+        sys.exit(1)
+
+    if args.pretty:
+        display_stats(df)  # rich table display
+    else:
+        print(ft_describe(df))
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ import argparse
 def parse_path():
     parser = argparse.ArgumentParser(
         prog="describe.py",
-        description="ft_describe",
+        description="Describe numerical columns' statistics",
     )
     parser.add_argument("path", help=".csv file to describe")
     args = parser.parse_args()

@@ -7,7 +7,8 @@ from rich.console import Console
 
 from utils.stats import aggregation as agg
 
-def describe(df: pd.DataFrame) -> pd.DataFrame:
+def ft_describe(df: pd.DataFrame) -> pd.DataFrame:
+    """mimic pandas' describe, with extra twists"""
 
     numerical_cols = df.select_dtypes(include=np.number).columns
 
@@ -43,7 +44,7 @@ def describe(df: pd.DataFrame) -> pd.DataFrame:
 def display_stats(df: pd.DataFrame) -> None:
 
     console = Console()
-    stats_df = describe(df)
+    stats_df = ft_describe(df)
     
     table = Table(title="Dataframe Statistics", show_lines=True, header_style="bold magenta")
     table.add_column("Statistic", style="bold cyan", justify="left")
