@@ -1,43 +1,38 @@
 #!./venv/bin/python
 
 import argparse
+import sys
 
+import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
-from utils import read_csv, parse_path_feature_2
-
-
-# TODO: iterate until perfect
-def scatter_plot(df, feature_x: str, feature_y: str):
-    plt.title(f"{feature_x} VS {feature_y}")
-    plt.xlabel(feature_x)
-    plt.ylabel(feature_y)
-
-    gryffindor = df[df["Hogwarts House"] == "Gryffindor"]
-    ravenclaw = df[df["Hogwarts House"] == "Ravenclaw"]
-    hufflepuff = df[df["Hogwarts House"] == "Hufflepuff"]
-    slytherin = df[df["Hogwarts House"] == "Slytherin"]
-
-    plt.scatter(gryffindor[feature_x], gryffindor[feature_y], color="red", alpha=0.4, label="Gryffindor")
-    plt.scatter(ravenclaw[feature_x], ravenclaw[feature_y], color="blue", alpha=0.4, label="Ravenclaw")
-    plt.scatter(hufflepuff[feature_x], hufflepuff[feature_y], color="yellow", alpha=0.4, label = "Hufflepuff")
-    plt.scatter(slytherin[feature_x], slytherin[feature_y], color="green", alpha=0.4, label="Slytherin")
-
-    plt.legend()
-    plt.show()
+from utils.parse_utils import get_description
 
 
-def get_description():
-    COLUMN_NAMES = [
-        "Arithmancy", "Astronomy", "Herbology", "Defense Against the Dark Arts", "Divination",
-        "Muggle Studies", "Ancient Runes", "History of Magic", "Transfiguration", "Potions",
-        "Care of Magical Creatures", "Charms", "Flying"
-    ]
+def scatter_plot(df, col_x: str, col_y: str, separate: bool):
+    sns.set_style("darkgrid")
+    plt.rcParams.update({'font.size': 20})
+
+    plt.figure(figsize=(15, 10))
+    plt.xlabel(col_x)
+    plt.ylabel(col_y)
+    if separate:
+        plt.title(f"Scatter Plot of '{col_x}' vs '{col_y}' by Houses", fontsize=28)
+        colors = {
+            "Gryffindor": "red",
+            "Ravenclaw": "blue",
+            "Hufflepuff": "gold",
+            "Slytherin": "green",
+        }
+        for house, group in df.groupby("Hogwarts House"):
+            plt.scatter(group[col_x], group[col_y], alpha=0.7, label=house, color=colors.get(house, "gray"))
+        plt.legend()
+    else:
+        plt.title(f"Scatter Plot of '{col_x}' vs '{col_y}'", fontsize=28)
+        plt.scatter(df[col_x], df[col_y], alpha=0.8)
     
-    des = "Draw a scatter plot for the selected columns:\n"
-    for c in COLUMN_NAMES:
-        des += f"  {c}\n"
-    return des
+    plt.show()
 
 
 def main():
@@ -46,13 +41,25 @@ def main():
         description=get_description(),
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
+    parser.add_argument("-s", "--separate", action="store_true", help="Divide the dataset by houses")
     parser.add_argument("path", help=".csv file to describe")
     parser.add_argument("feature_x", help="feature's name to plot on x-axis")
     parser.add_argument("feature_y", help="feature's name to plot on y-axis")
     args = parser.parse_args()
 
-    df = read_csv(args.path)
-    scatter_plot(df, args.feature_x, args.feature_y)
+    col_x = args.feature_x
+    col_y = args.feature_y
+    try:
+        df = pd.read_csv(args.path, index_col="Index")
+        if col_x not in df:
+            raise ValueError(f"'{col_x}' is not in df")
+        if col_y not in df:
+            raise ValueError(f"'{col_y}' is not in df")
+    except Exception as e:
+        print(e)
+        sys.exit(1)
+
+    scatter_plot(df, col_x, col_y, args.separate)
 
 
 if __name__ == "__main__":

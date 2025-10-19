@@ -36,3 +36,16 @@ def parse_path_feature_2():
     parser.add_argument("feature_y", help="Feature Y name")
     args = parser.parse_args()
     return args
+
+
+def get_description():
+    COLUMN_NAMES = [
+        "Arithmancy", "Astronomy", "Herbology", "Defense Against the Dark Arts", "Divination",
+        "Muggle Studies", "Ancient Runes", "History of Magic", "Transfiguration", "Potions",
+        "Care of Magical Creatures", "Charms", "Flying"
+    ]
+    
+    des = "Draw a scatter plot for the selected columns:\n"
+    for c in COLUMN_NAMES:
+        des += f"  {c}\n"
+    return des
