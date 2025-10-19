@@ -10,24 +10,16 @@ import seaborn as sns
 from utils.parse_utils import get_description
 
 
-def scatter_plot(df, col_x: str, col_y: str, separate: bool):
+def scatter_plot(df, col_x: str, col_y: str):
     plt.rcParams.update({'font.size': 20})
 
     plt.figure(figsize=(15, 10))
-    title = f"Scatter Plot of '{col_x}' vs '{col_y}'"
-    if separate:
-        title += " by Houses"
-        colors = {
-            "Gryffindor": "red",
-            "Ravenclaw": "blue",
-            "Hufflepuff": "gold",
-            "Slytherin": "green",
-        }
-        sns.scatterplot(df, x=col_x, y=col_y, hue="Hogwarts House", palette=colors)
-    else:
-        sns.scatterplot(df, x=col_x, y=col_y)
-    
-    plt.title(title, fontsize=28)
+    plt.title(f"Scatter Plot of '{col_x}' vs '{col_y}' by Houses", fontsize=28, pad=20)
+    colors = {"Gryffindor": "red", "Ravenclaw": "blue",
+              "Hufflepuff": "gold", "Slytherin": "green"}
+    sns.scatterplot(df, x=col_x, y=col_y, hue="Hogwarts House", palette=colors)
+
+    plt.tight_layout()
     plt.show()
 
 
@@ -37,7 +29,6 @@ def main():
         description=get_description(),
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument("-s", "--separate", action="store_true", help="Divide the dataset by houses")
     parser.add_argument("path", help=".csv file to describe")
     parser.add_argument("feature_x", help="feature's name to plot on x-axis")
     parser.add_argument("feature_y", help="feature's name to plot on y-axis")
@@ -55,7 +46,7 @@ def main():
         print(e)
         sys.exit(1)
 
-    scatter_plot(df, col_x, col_y, args.separate)
+    scatter_plot(df, col_x, col_y)
 
 
 if __name__ == "__main__":

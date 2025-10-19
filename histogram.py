@@ -10,24 +10,16 @@ import seaborn as sns
 from utils.parse_utils import get_description
 
 
-def plot_histogram(df: pd.DataFrame, col: str, separate: bool):
+def plot_histogram(df: pd.DataFrame, col: str):
     plt.rcParams.update({'font.size': 20})
 
     plt.figure(figsize=(15, 10))
-    title = f"Distribution of '{col}'"
-    if separate:
-        title += " by Houses"
-        colors = {
-            "Gryffindor": "red",
-            "Ravenclaw": "blue",
-            "Hufflepuff": "gold",
-            "Slytherin": "green",
-        }
-        sns.histplot(df, x=col, bins=20, hue="Hogwarts House", palette=colors)
-    else:
-        sns.histplot(df, x=col, bins=20)
+    plt.title(f"Distribution of '{col}' by Houses", fontsize=28, pad=20)
+    colors = {"Gryffindor": "red", "Ravenclaw": "blue",
+              "Hufflepuff": "gold", "Slytherin": "green"}
+    sns.histplot(df, x=col, bins=20, hue="Hogwarts House", palette=colors)
 
-    plt.title(title, fontsize=28)
+    plt.tight_layout()
     plt.show()
 
 
@@ -37,7 +29,6 @@ def main():
         description=get_description(),
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument("-s", "--separate", action="store_true", help="Divide the dataset by houses")
     parser.add_argument("path", help=".csv file to describe")
     parser.add_argument("feature", help="feature's name to plot")
     args = parser.parse_args()
@@ -51,7 +42,7 @@ def main():
         print(e)
         sys.exit(1)
 
-    plot_histogram(df, col, args.separate)
+    plot_histogram(df, col)
 
  
 if __name__ == "__main__":
