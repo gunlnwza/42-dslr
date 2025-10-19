@@ -57,14 +57,17 @@ def main():
     parser.add_argument("feature", help="feature's name to plot")
     args = parser.parse_args()
 
+    col = args.feature
     try:
         df = pd.read_csv(args.path, index_col="Index")
+        if col not in df:
+            raise ValueError(f"'{col}' is not in df")
     except Exception as e:
         print(e)
         sys.exit(1)
 
-    plot_histogram(df, args.feature, args.separate)
+    plot_histogram(df, col, args.separate)
 
-
+ 
 if __name__ == "__main__":
     main()
