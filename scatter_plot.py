@@ -17,7 +17,7 @@ def scatter_plot(df, col_x: str, col_y: str):
     plt.title(f"Scatter Plot of '{col_x}' vs '{col_y}' by Houses", fontsize=28, pad=20)
     colors = {"Gryffindor": "red", "Ravenclaw": "blue",
               "Hufflepuff": "gold", "Slytherin": "green"}
-    sns.scatterplot(df, x=col_x, y=col_y, hue="Hogwarts House", palette=colors)
+    sns.scatterplot(df, x=col_x, y=col_y, hue="Hogwarts House", palette=colors, s=100)
 
     plt.tight_layout()
     plt.show()
