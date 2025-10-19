@@ -11,31 +11,27 @@ from utils.parse_utils import get_description
 
 
 def plot_histogram(df: pd.DataFrame, col: str, separate: bool):
-    sns.set_style("darkgrid")
     plt.rcParams.update({'font.size': 20})
 
     plt.figure(figsize=(15, 10))
-    plt.xlabel(col)
-    plt.ylabel("Count")
+    title = f"Distribution of '{col}'"
     if separate:
-        plt.title(f"Distribution of '{col}' by Houses", fontsize=28)
+        title += " by Houses"
         colors = {
             "Gryffindor": "red",
             "Ravenclaw": "blue",
             "Hufflepuff": "gold",
             "Slytherin": "green",
         }
-        for house, group in df.groupby("Hogwarts House"):
-            plt.hist(group[col], bins=20, alpha=0.6, label=house, color=colors.get(house, "gray"))
-        plt.legend()
+        sns.histplot(df, x=col, bins=20, hue="Hogwarts House", palette=colors)
     else:
-        plt.title(f"Distribution of '{col}'", fontsize=28)
-        plt.hist(df[col], alpha=0.8)
-    
+        sns.histplot(df, x=col, bins=20)
+
+    plt.title(title, fontsize=28)
     plt.show()
 
 
-def main():    
+def main():
     parser = argparse.ArgumentParser(
         prog="histogram.py",
         description=get_description(),

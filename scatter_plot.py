@@ -11,27 +11,23 @@ from utils.parse_utils import get_description
 
 
 def scatter_plot(df, col_x: str, col_y: str, separate: bool):
-    sns.set_style("darkgrid")
     plt.rcParams.update({'font.size': 20})
 
     plt.figure(figsize=(15, 10))
-    plt.xlabel(col_x)
-    plt.ylabel(col_y)
+    title = f"Scatter Plot of '{col_x}' vs '{col_y}'"
     if separate:
-        plt.title(f"Scatter Plot of '{col_x}' vs '{col_y}' by Houses", fontsize=28)
+        title += " by Houses"
         colors = {
             "Gryffindor": "red",
             "Ravenclaw": "blue",
             "Hufflepuff": "gold",
             "Slytherin": "green",
         }
-        for house, group in df.groupby("Hogwarts House"):
-            plt.scatter(group[col_x], group[col_y], alpha=0.7, label=house, color=colors.get(house, "gray"))
-        plt.legend()
+        sns.scatterplot(df, x=col_x, y=col_y, hue="Hogwarts House", palette=colors)
     else:
-        plt.title(f"Scatter Plot of '{col_x}' vs '{col_y}'", fontsize=28)
-        plt.scatter(df[col_x], df[col_y], alpha=0.8)
+        sns.scatterplot(df, x=col_x, y=col_y)
     
+    plt.title(title, fontsize=28)
     plt.show()
 
 
