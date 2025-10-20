@@ -3,6 +3,7 @@
 import argparse
 import sys
 
+import numpy as np
 import pandas as pd
 
 from utils.stats.describe import ft_describe, display_stats
@@ -23,6 +24,7 @@ def main():
     if args.pretty:
         display_stats(df)  # rich table display
     else:
+        pd.options.display.float_format = '{:.6f}'.format
         print(ft_describe(df))
 
 
