@@ -1,3 +1,13 @@
+# Python
 venv/
 __pycache__/
+
+# Python Notebook
+*.ipynb
+
+# Data
+*.csv
+!datasets/*
+
+# Mac
 *.DS_Store
